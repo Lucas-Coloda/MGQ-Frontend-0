@@ -2,6 +2,12 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.24.
 
+## Backend
+
+1 - Download backend project from `https://github.com/Lucas-Coloda/MGQ-server.git`;
+2 - Change variable 'api' at 'scripts' object at package.json file from `%PROJECT WORKSPACE%\\MGQ` to your own path.
+Run `npm run api`  
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
