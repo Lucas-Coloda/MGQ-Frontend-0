@@ -1,4 +1,5 @@
 <mat-card *ngFor="let history of histories" class="history-card">
+
   <mat-card-header>
     <mat-card-title>
       {{history.title}}
@@ -7,12 +8,18 @@
       {{history.subtitle}}
     </mat-card-subtitle>
   </mat-card-header>
+
   <mat-card-content>
     <p>
       {{history.resume}}
     </p>
   </mat-card-content>
+
   <mat-card-actions>
-    <fa-icon [icon]="faCoffee"></fa-icon>
+    <button mat-raised-button (click)="openDialog()">
+      <fa-icon [icon]="faCoffee"></fa-icon>
+    </button>
+    <button mat-stroked-button (click)="openSnackBar()">Show snack-bar</button>
   </mat-card-actions>
+
 </mat-card>

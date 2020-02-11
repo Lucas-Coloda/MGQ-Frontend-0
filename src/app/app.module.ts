@@ -1,22 +1,33 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from "@angular/common/http";
+import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { 
+  MatCardModule, 
+  MatDialogModule, 
+  MatSnackBarModule,
+  MatFormFieldModule,
+  MatInputModule
+ } from '@angular/material';
+ import { FormsModule } from '@angular/forms';
+
 import { HistoryComponent } from './history/history.component';
 import { ChapterComponent } from './chapter/chapter.component';
-import { Services } from "./services/services.service";
+import { Service } from "./services/service.service";
+import { DialogComponent } from './dialog/dialog.component';
 
-import { HttpClientModule } from "@angular/common/http";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule } from '@angular/material';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
     AppComponent,
     HistoryComponent,
-    ChapterComponent
+    ChapterComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,10 +35,21 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    FormsModule,
 
+    MatFormFieldModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatInputModule,
     MatCardModule,
   ],
-  providers: [HttpClientModule, Services],
+  entryComponents: [
+    DialogComponent,
+  ],
+  providers: [
+    HttpClientModule,
+    Service,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
