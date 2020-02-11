@@ -6,6 +6,7 @@ enum History {
     put = '/history',
     post = '/history',
     path = '/history',
+    delete = '/history',
     list = '/histories',
 }
 
