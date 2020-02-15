@@ -1,77 +1,72 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { Injectable } from '@angular/core';
 import { Router } from "./server-routes";
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class Service extends Router {
   private _server: string;
-  private _route: string;
-  private _httpMethod: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, server: string) {
     super();
+    this._server = server;
   }
 
-  // Base methods
-  public get(entity: string): Service {
-    this._httpMethod = 'get';
-    this._route = this._getRoute(entity, 'get');
-    return this;
-  }
-  public list(entity: string): Service {
-    this._httpMethod = 'get';
-    this._route = this._getRoute(entity, 'list');
-    return this;
+  public get(entity: string, value: String | Number): RouteManager {
+    return new RouteManager(this.http, this._getRoute(entity, 'get'), 'get').slash(value);
   }
 
-  public async post(history: any): Promise<any> {
-    return await this.http.post('http://localhost:8080/history', history).toPromise();
+  public list(entity: string): RouteManager {
+    return new RouteManager(this.http, this._getRoute(entity, 'list'), 'get');
   }
 
-  public async put(history: any): Promise<any> {
-    return await this.http.put('http://localhost:8080/history', history).toPromise();
+  public post(entity: string): RouteManager {
+    return new RouteManager(this.http, this._getRoute(entity, 'post'), 'post');
   }
 
-  public async delete(history: any): Promise<any> {
-    // return await this.http.delete('http://localhost:8080/history', historystory).toPromise();
-    return await this.http.request('delete', 'http://localhost:8080/history', { body: history }).toPromise();
+  public put(entity: string): RouteManager {
+    return new RouteManager(this.http, this._getRoute(entity, 'put'), 'put');
   }
 
-  // RESTfull call methods
-  public async go(): Promise<any> {
-    this._validateRoute();
-    return await this.http[this._httpMethod](this._route).toPromise();
+  public delete(entity: string): RouteManager {
+    return new RouteManager(this.http, this._getRoute(entity, 'delete'), 'delete');
   }
 
-  // URI/URL manipulation
-  public slash(value): Service {
-    this._validateRoute();
-    this._route = this._route.concat('/').concat(value);
-    return this;
-  }
-
-  // Suport methods
   public setServer(server: string) {
     this._server = server;
   }
 
-  private _getRoute(entity, methodPath) {
-    this._validateServer();
+  private _getRoute(entity, methodPath): string {
     return this.BASE[this._server].concat(this[entity.toUpperCase()][methodPath])
   }
 
-  // Validation
-  private _validateRoute() {
-    this._validateServer()
-    if (!this._route) {
-      throw "Can't run 'go' without a route";
-    }
+}
+
+class RouteManager {
+  private _requestContent: any;
+  private _method: string;
+  private _route: string;
+
+  constructor(private http: HttpClient, route: string, method: string) {
+    this._requestContent = new Object();
+    this._method = method;
+    this._route = route;
   }
-  private _validateServer() {
-    if (!this._server) {
-      throw "You need to set a service server first";
-    }
+
+  public slash(value: String | Number): RouteManager {
+    this._route = `${this._route}/${value}`;
+    return this;
+  }
+
+  public requestBody(body: Object): RouteManager {
+    this._requestContent.body = body;
+    return this;
+  }
+
+  public async go(): Promise<any> {
+    return await this.http.request(this._method, this._route, this._requestContent).toPromise();;
   }
 }
+
