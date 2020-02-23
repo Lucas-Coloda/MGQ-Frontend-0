@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { faCoffee, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { DialogComponent } from "../dialog/dialog.component";
-import { Service } from '../services/service.service';
-import { HttpClient } from '@angular/common/http';
 
+import { faCoffee, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+
+import { Service } from '@services/service.service';
+import { DialogComponent } from "@components/dialog/dialog.component";
+import { History } from "@classes/history/history";
 
 @Component({
   selector: 'app-history',
-  templateUrl: './history.component.html',
+  templateUrl: '/history.component.html',
   styleUrls: ['./history.component.styl']
 })
 
@@ -18,7 +20,7 @@ export class HistoryComponent implements OnInit {
   public faCoffee: IconDefinition = faCoffee;
   private HISTORY = 'history';
   // values
-  public history: any = { title: null, subtitle: null, resume: null };
+  public history: History;
   public histories: any;
   private mgq: Service;
 
@@ -59,11 +61,4 @@ export class HistoryComponent implements OnInit {
   public async getHistories(): Promise<any> {
     return await this.mgq.list(this.HISTORY).go()
   }
-
-/*
-  console.log(await this.mgq.get(this.HISTORY, 2).go());
-  console.log(await this.mgq.post(this.HISTORY).requestBody({ title: 't', subtitle: 's', resume: 'r' }).go());
-  console.log(await this.mgq.put(this.HISTORY).requestBody({"id": 2, "title": "102", "subtitle": "2160", "resume": "0220"}).go());
-  console.log(await this.mgq.delete(this.HISTORY).requestBody({"id": 201, "title": "102", "subtitle": "2160", "resume": "0220"}).go() );
-*/
 }

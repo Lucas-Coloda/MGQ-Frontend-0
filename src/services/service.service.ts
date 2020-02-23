@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
-import { Router } from "./server-routes";
+import { Router } from "@services/server-routes";
 
 @Injectable({
   providedIn: 'root'

@@ -7,19 +7,19 @@ import { AppComponent } from './app.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { 
-  MatCardModule, 
-  MatDialogModule, 
+import {
+  MatCardModule,
+  MatDialogModule,
   MatSnackBarModule,
   MatFormFieldModule,
   MatInputModule
- } from '@angular/material';
- import { FormsModule } from '@angular/forms';
+} from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
-import { HistoryComponent } from './history/history.component';
-import { ChapterComponent } from './chapter/chapter.component';
-import { Service } from "./services/service.service";
-import { DialogComponent } from './dialog/dialog.component';
+import { HistoryComponent } from '@components/history/history.component'
+import { ChapterComponent } from '@components/chapter/chapter.component';
+import { DialogComponent } from '@components/dialog/dialog.component';
+import { Service } from "@services/service.service";
 
 
 @NgModule({
