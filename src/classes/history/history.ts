@@ -1,11 +1,12 @@
 export class History {
-    constructor(title?: String, subtitle?: String, resume?: String) {
+    constructor(id?: Number, author?: Number, title?: String, resume?: String) {
+        this.id = id;
+        this.author = author;
         this.title = title;
-        this.subtitle = subtitle;
         this.resume = resume;
     }
-    
+    id: Number;
+    author: Number;
     title: String;
-    subtitle: String;
     resume: String
 }

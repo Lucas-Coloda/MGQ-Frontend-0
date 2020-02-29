@@ -1,25 +1,73 @@
-{{histories}}
-<mat-card *ngFor="let history of histories" class="history-card">
-  <mat-card-header>
-    <mat-card-title>
-      {{history.title}}
-    </mat-card-title>
-    <mat-card-subtitle>
-      {{history.subtitle}}
-    </mat-card-subtitle>
-  </mat-card-header>
+<div class="history" [style.display]='isHistoryFormOpen? "flex" : "block"'>
+  <div [style.width]='isHistoryFormOpen? "50%" : "100%"'>
+    <ng-container *ngIf="histories.length > 0; then historyList; else noData"></ng-container>
 
-  <mat-card-content>
-    <p>
-      {{history.resume}}
-    </p>
-  </mat-card-content>
+    <ng-template #historyList class="div1">
+      <mat-card *ngFor="let history of histories" class="history-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{history.title}}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{history.subtitle}}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            {{history.resume}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button (click)="openDialog(history)" class="btn btn-primary btn-sm mx-1">
+            <fa-icon [icon]="faCoffee"></fa-icon>
+          </button>
+          <button mat-stroked-button (click)="openSnackBar()" class="btn btn-primary btn-sm">
+            Show snack-bar
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </ng-template>
+    <ng-template #noData>
+      <ngb-alert [dismissible]="false">
+        <strong>NO DATA!</strong>
+      </ngb-alert>
+    </ng-template>
+  </div>
 
-  <mat-card-actions>
-    <button mat-raised-button (click)="openDialog(history)">
-      <fa-icon [icon]="faCoffee"></fa-icon>
-    </button>
-    <button mat-stroked-button (click)="openSnackBar()">Show snack-bar</button>
-  </mat-card-actions>
+  <div [style.width]='isHistoryFormOpen? "50%" : "100%"'>
+    <ng-container *ngIf="isHistoryFormOpen; then historyForm; else addHistoryButton"></ng-container>
 
-</mat-card>
+    <ng-template #historyForm>
+      <div class='w-i ps-f ps-r0 px-3 mt-3' form>
+        <h5>
+          Formulário
+          <button class="btn btn-sm" (click)=' closeHistoryForm()'>
+            <fa-icon [icon]="faTimes"></fa-icon>
+          </button>
+        </h5>
+        <form>
+          <mat-form-field class="w-100">
+            <mat-label>Title </mat-label>
+            <input matInput placeholder="Ex. Super Choque" [(ngModel)]="history.title" name="title">
+          </mat-form-field>
+          <br>
+          <mat-form-field class="w-100">
+            <mat-label>Resenha</mat-label>
+            <textarea matInput placeholder="Ex. Super Choque é uma série animada produzida em..."
+              [(ngModel)]="history.resume" name="resume"></textarea>
+          </mat-form-field>
+
+          <div class="d-flex justify-content-center align-self-center">
+            <button (click)='closeHistoryForm()' class="btn btn-outline-danger mx-1">Cancelar</button>
+            <button (click)='saveHistory()' class="btn btn-outline-success mx-1">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+    <ng-template #addHistoryButton>
+      <button class="btn btn-sm btn-outline-danger rounded ps-f ps-r3 ps-b2" (click)='openHistoyForm()'>
+        <fa-icon [icon]="faPlus"></fa-icon>
+      </button>
+    </ng-template>
+  </div>
+</div>

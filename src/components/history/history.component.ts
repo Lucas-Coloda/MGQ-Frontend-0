@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { faCoffee, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faCoffee, faPlus, faTimes, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 import { Service } from '@services/service.service';
-import { DialogComponent } from "@components/dialog/dialog.component";
 import { History } from "@classes/history/history";
 
 @Component({
@@ -16,49 +13,63 @@ import { History } from "@classes/history/history";
 })
 
 export class HistoryComponent implements OnInit {
-  // herper vars
-  public faCoffee: IconDefinition = faCoffee;
-  private HISTORY = 'history';
-  // values
+  private _mgq: Service;
   public history: History;
-  public histories: any;
-  private mgq: Service;
+  public histories: Array<History>;
+  public isHistoryFormOpen: boolean;
 
-  constructor(private http: HttpClient, public dialog: MatDialog, private _snackBar: MatSnackBar) {
-    this.mgq = new Service(http, 'MGQ_SERVER');
+  // incons
+  public faPlus: IconDefinition;
+  public faTimes: IconDefinition;
+  public faCoffee: IconDefinition;
+
+  constructor(private http: HttpClient) {
+    this._mgq = new Service(http, 'MGQ_SERVER');
+    this.history = new History();
+    this.histories = new Array<History>();
+    this.isHistoryFormOpen = false;
+
+    // Icons
+    this.faCoffee = faCoffee;
+    this.faTimes = faTimes;
+    this.faPlus = faPlus;
   };
 
   async ngOnInit() {
+    this.loadHistories();
+  }
+
+  public openHistoyForm(history?: History): void {
+    this.makeHistory(history)
+    this.isHistoryFormOpen = true;
+  }
+  
+  public closeHistoryForm(): void {
+    this.isHistoryFormOpen = false;
+  }
+
+  private makeHistory (history?: History) {
+    this.history = history || new History();
+  }
+
+  // Crud Methods
+  public async loadHistories (): Promise<any>{
     this.histories = await this.getHistories();
+    console.log(this.histories)
   }
 
-  // methods
-  openDialog(history: any): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '800px',
-      data: {
-        title: history.title,
-        subtitle: history.subtitle,
-        resume: history.resume,
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.history = result;
-        console.log(this.history);
-      }
-    });
-  }
-
-  openSnackBar() {
-    this._snackBar.open('Message archived', 'Undo', {
-      duration: 2000,
-    });
+  public async saveHistory (): Promise<any> {
+    await this.postHistory();
+    this.closeHistoryForm();
+    await this.loadHistories();
   }
 
   // Services
-  public async getHistories(): Promise<any> {
-    return await this.mgq.list(this.HISTORY).go()
+  public async getHistories(): Promise<Array<History>> {
+    const resolve = await this._mgq.list('history').go()
+    return resolve.map( (h: History): History => new History(h.id, h.author, h.title, h.resume));
+  }
+  public async postHistory(): Promise<any> {
+    return await this._mgq.post('history').requestBody(this.history).go();
   }
 }

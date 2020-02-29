@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogComponent } from '@components/dialog/dialog.component';
+import { HistoryFormComponent } from './history-form.component';
 
-describe('DialogComponent', () => {
-  let component: DialogComponent;
-  let fixture: ComponentFixture<DialogComponent>;
+describe('HistoryFormComponent', () => {
+  let component: HistoryFormComponent;
+  let fixture: ComponentFixture<HistoryFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DialogComponent ]
+      declarations: [ HistoryFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogComponent);
+    fixture = TestBed.createComponent(HistoryFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
