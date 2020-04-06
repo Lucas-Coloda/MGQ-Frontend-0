@@ -5,6 +5,7 @@ export class History {
         this.title = title;
         this.resume = resume;
     }
+    
     id: Number;
     author: Number;
     title: String;
